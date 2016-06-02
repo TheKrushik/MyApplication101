@@ -21,23 +21,24 @@ class StudentsLoader extends AsyncTaskLoader<List<Student>> {
 
     @Override
     public List<Student> loadInBackground() {
-        List<Student> students = new ArrayList<>();
+        List<Student> students = new ArrayList<>();//ArrayList студентов
+        Uri uri = Uri.parse("content://info.krushik.android.myapplication10/students");//объявляем новый Uri, убеждаемся что он правильный
 
-        Uri uri = Uri.parse("content://info.krushik.android.myapplication10/students");
-
-        Cursor cursor = null;
+        Cursor cursor = null;//обявляем Cursor
         try {
             cursor = mContext.getContentResolver().query(uri, null, null, null, null);
             if (cursor.moveToFirst()){
-                Student student = new Student();
+                while (!cursor.isAfterLast()) {
+                    Student student = new Student();
 
-                student.id = cursor.getLong(cursor.getColumnIndex("_id"));
-                student.FirstName = cursor.getString(cursor.getColumnIndex("FirstName"));
-                student.LastName = cursor.getString(cursor.getColumnIndex("FirstName"));
-                student.Age = cursor.getLong(cursor.getColumnIndex("Age"));
+                    student.id = cursor.getLong(cursor.getColumnIndex("_id"));
+                    student.FirstName = cursor.getString(cursor.getColumnIndex("FirstName"));
+                    student.LastName = cursor.getString(cursor.getColumnIndex("FirstName"));
+                    student.Age = cursor.getLong(cursor.getColumnIndex("Age"));
 
-                students.add(student);
-                cursor.moveToFirst();
+                    students.add(student);
+                    cursor.moveToNext();
+                }
 
             }
         } catch (Exception e) {
@@ -45,7 +46,6 @@ class StudentsLoader extends AsyncTaskLoader<List<Student>> {
         } finally {
             if (cursor != null) {
                 cursor.close();
-
             }
         }
         return students;

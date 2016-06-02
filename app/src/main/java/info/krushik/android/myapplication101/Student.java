@@ -1,8 +1,5 @@
 package info.krushik.android.myapplication101;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 public class Student {
 
     public long id;
